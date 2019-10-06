@@ -250,7 +250,7 @@ dev.off()
 - R is a free, open source platform for statistical and graphical analysis.
 - Scripts written in R can run on Windows, Linux and Mac OS X.
 - Graphs produced by R are reproducible.
-- R Has a large user space.
+- R has a large user space.
 
 ---
 
