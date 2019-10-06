@@ -34,7 +34,7 @@ University of Cambridge
   <h3>Introduction</h3>
   <ul>
 <li>Graphs are a powerful way to present data and results in a concise manner.</li>
-<li>A graph is more readily understandable than words and numbers.</li>
+<li>Graphs are more readily understandable than words and numbers.</li>
 <li>Good graphs are useful in examining data to get idea about the patterns that may exist.</li>
 <li>Graphs can also aid in selecting correct statistical analysis.
 <br></br>
@@ -47,10 +47,14 @@ University of Cambridge
   <h3>Graphical analysis in R</h3>
   <ul>
 <li>Graphical analysis in R is done by calling a series of graphics functions.</li>
-<li>These functions produce either a complete plot, or</li>
+<li>These functions produce either:
+
+<ul>
+<li>a complete plot, or</li>
 <li>adds some output to an existing plot.</li>
-<li>R graphics follows a <strong>painter&#39;s model</strong></li>
-<li>Sophisticated packages are developed: <code>ggplot2</code>, <code>Lattice</code>, <code>Leaflet</code> </li>
+</ul></li>
+<li>R graphics follows a <strong>painter&#39;s model</strong>.</li>
+<li>Sophisticated packages are developed <em>e.g.</em> <code>ggplot2</code>.</li>
 </ul>
 
   
@@ -101,7 +105,7 @@ head(strainInfo,10)
   
 </section>
 <section class='' data-state='' id='slide-7'>
-  <h3>Strains by Country of isolation</h3>
+  <h3>Strains by Country of isolation (Pie chart)</h3>
   <pre><code class="r">pie.data &lt;- table(strainInfo$Country)
 lbls &lt;- paste(names(pie.data), &quot;\n&quot;, pie.data, sep=&quot;&quot;)
 pie(pie.data, labels = lbls, cex = 1.5, cex.main = 1.5,
@@ -113,10 +117,10 @@ pie(pie.data, labels = lbls, cex = 1.5, cex.main = 1.5,
   
 </section>
 <section class='' data-state='' id='slide-8'>
-  <h3>Distribution of GC content</h3>
-  <pre><code class="r">hist(strainInfo$GC, breaks = 5,
+  <h3>Distribution of GC content (Histogram)</h3>
+  <pre><code class="r">hist(strainInfo$GC, breaks = 5, cex = 1.5,
      main = &#39;Distribution of GC content&#39;,
-     xlab = &#39;GC content (%)&#39;,
+     xlab = &#39;GC content (%)&#39;, lwd = 2,
      cex.lab = 1.5, cex.main = 1.5, cex.axis = 1.2)
 </code></pre>
 
@@ -125,7 +129,7 @@ pie(pie.data, labels = lbls, cex = 1.5, cex.main = 1.5,
   
 </section>
 <section class='' data-state='' id='slide-9'>
-  <h3>Disease causing strains have fewer genes??</h3>
+  <h3>Disease causing strains have fewer genes?? (Boxplot)</h3>
   <pre><code class="r">boxplot(strainInfo$CDS ~ strainInfo$Phenotype, cex.lab = 1.3, cex.main = 1.5, cex.axis = 1.3,
         ylab=&#39;Number of genes&#39;, xlab=&#39;Phenotype&#39;,
         main=&#39;Number of genes  by phenotypes&#39;, col=c(&quot;antiquewhite3&quot;,&quot;burlywood2&quot;,&quot;gold3&quot;))
@@ -136,7 +140,7 @@ pie(pie.data, labels = lbls, cex = 1.5, cex.main = 1.5,
   
 </section>
 <section class='' data-state='' id='slide-10'>
-  <h3>Systemic disease causing strains have fewer genes</h3>
+  <h3>Systemic strains have fewer genes (Violin plot)</h3>
   <pre><code class="r">vioplot(x1, x2, x3, cex.lab = 1.3, cex.main = 1.5, cex.axis = 1.3, 
         names=c(&quot;Non-Clinical&quot;,&quot;Respiratory&quot;,&quot;Sys-Brain&quot;),
         col=c(&quot;antiquewhite3&quot;,&quot;burlywood2&quot;,&quot;gold3&quot;),main=&#39;Number of genes by phenotypes&#39;)
@@ -150,7 +154,7 @@ pie(pie.data, labels = lbls, cex = 1.5, cex.main = 1.5,
   
 </section>
 <section class='' data-state='' id='slide-11'>
-  <h3>Genome length is correlated with number of genes</h3>
+  <h3>Genome length is correlated with number of genes (Scatter plot)</h3>
   <pre><code class="r">plot(strainInfo$GenomeSize,strainInfo$CDS, cex.lab = 1.5,
      col = c(&quot;blue&quot;,&quot;burlywood2&quot;,&quot;red&quot;)[strainInfo$Phenotype],
      xlab = &#39;Genome length&#39;, ylab = &#39;Number of genes&#39;)
@@ -162,17 +166,7 @@ abline(lm(strainInfo$CDS ~ strainInfo$GenomeSize), col = &#39;black&#39;, lwd = 
   
 </section>
 <section class='' data-state='' id='slide-12'>
-  <h3>Genome length is correlated with number of genes</h3>
-  <pre><code class="r">correlation &lt;- round(cor(strainInfo$GenomeSize, strainInfo$CDS),2)
-text(2e6, 2300, paste(&#39;cor = &#39;,correlation,sep=&#39;&#39;))
-</code></pre>
-
-<p><img src="assets/fig/unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10"></p>
-
-  
-</section>
-<section class='' data-state='' id='slide-13'>
-  <h3>Bacterial population structure and phenotypes</h3>
+  <h3>Bacterial population structure and phenotypes (Stacked barplot)</h3>
   <pre><code class="r">counts &lt;- table(strainInfo$Phenotype,strainInfo$Population)
 barplot(counts, main = &quot;Distribution of strains&quot;, cex.lab = 1.5,
         xlab = &quot;Bacterial population&quot;, cex.main = 1.5,
@@ -180,18 +174,18 @@ barplot(counts, main = &quot;Distribution of strains&quot;, cex.lab = 1.5,
 abline(h = 0)
 </code></pre>
 
-<p><img src="assets/fig/unnamed-chunk-11-1.png" alt="plot of chunk unnamed-chunk-11"></p>
+<p><img src="assets/fig/unnamed-chunk-9-1.png" alt="plot of chunk unnamed-chunk-9"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-13'>
+  <h3>Multiple plots in a grid</h3>
+  <p><img src="assets/fig/unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10"></p>
 
   
 </section>
 <section class='' data-state='' id='slide-14'>
-  <h3>Multiple plots in a grid</h3>
-  <p><img src="assets/fig/unnamed-chunk-12-1.png" alt="plot of chunk unnamed-chunk-12"></p>
-
-  
-</section>
-<section class='' data-state='' id='slide-15'>
-  <h3>Multiple plots in a grid</h3>
+  <h3>Multiple plots in a grid (R code)</h3>
   <pre><code class="r">par(mfrow=c(1,2))
 
 hist(strainInfo$GC, breaks = 5,
@@ -210,8 +204,8 @@ abline(lm(strainInfo$CDS ~ strainInfo$GenomeSize), col = &#39;black&#39;, lwd = 
 
   
 </section>
-<section class='' data-state='' id='slide-16'>
-  <h3>Saving plots in files</h3>
+<section class='' data-state='' id='slide-15'>
+  <h3>Saving plots in files (R code)</h3>
   <pre><code class="r">png(&#39;MyImage.png&#39;)
 
 par(mfrow=c(1,2))
@@ -238,18 +232,18 @@ dev.off()
 
   
 </section>
-<section class='' data-state='' id='slide-17'>
+<section class='' data-state='' id='slide-16'>
   <h3>Summary</h3>
   <ul>
-<li>R is free, open source platform for statistical and graphical analysis.</li>
-<li>R scripts run on Windows, Linux and Mac OS X.</li>
+<li>R is a free, open source platform for statistical and graphical analysis.</li>
+<li>Scripts written in R can run on Windows, Linux and Mac OS X.</li>
 <li>Graphs produced by R are reproducible.</li>
-<li>Has a large user space.</li>
+<li>R Has a large user space.</li>
 </ul>
 
   
 </section>
-<section class='' data-state='' id='slide-18'>
+<section class='' data-state='' id='slide-17'>
   <h3>Additional websites</h3>
   <ul>
 <li>Cookbook for R  - <a href="http://www.cookbook-r.com">http://www.cookbook-r.com</a></li>
@@ -260,7 +254,7 @@ dev.off()
 
   
 </section>
-<section class='' data-state='' id='slide-19'>
+<section class='' data-state='' id='slide-18'>
   <h2>Thank you !!</h2>
   
   

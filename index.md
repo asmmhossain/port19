@@ -29,7 +29,7 @@ University of Cambridge
 ### Introduction
   
 - Graphs are a powerful way to present data and results in a concise manner.
-- A graph is more readily understandable than words and numbers.
+- Graphs are more readily understandable than words and numbers.
 - Good graphs are useful in examining data to get idea about the patterns that may exist.
 - Graphs can also aid in selecting correct statistical analysis.
 <br></br>
@@ -40,10 +40,11 @@ University of Cambridge
 ### Graphical analysis in R
 
 - Graphical analysis in R is done by calling a series of graphics functions.
-- These functions produce either a complete plot, or
-- adds some output to an existing plot.
-- R graphics follows a **painter's model**
-- Sophisticated packages are developed: `ggplot2`, `Lattice`, `Leaflet` 
+- These functions produce either:
+    - a complete plot, or
+    - adds some output to an existing plot.
+- R graphics follows a **painter's model**.
+- Sophisticated packages are developed *e.g.* `ggplot2`.
 
 ---
 
@@ -93,7 +94,7 @@ head(strainInfo,10)
 
 ---
 
-### Strains by Country of isolation
+### Strains by Country of isolation (Pie chart)
 
 
 ```r
@@ -108,13 +109,13 @@ pie(pie.data, labels = lbls, cex = 1.5, cex.main = 1.5,
 ---  
 
 
-### Distribution of GC content
+### Distribution of GC content (Histogram)
 
 
 ```r
-hist(strainInfo$GC, breaks = 5,
+hist(strainInfo$GC, breaks = 5, cex = 1.5,
      main = 'Distribution of GC content',
-     xlab = 'GC content (%)',
+     xlab = 'GC content (%)', lwd = 2,
      cex.lab = 1.5, cex.main = 1.5, cex.axis = 1.2)
 ```
 
@@ -122,7 +123,7 @@ hist(strainInfo$GC, breaks = 5,
 
 ---
   
-### Disease causing strains have fewer genes??
+### Disease causing strains have fewer genes?? (Boxplot)
 
 
 ```r
@@ -135,7 +136,7 @@ boxplot(strainInfo$CDS ~ strainInfo$Phenotype, cex.lab = 1.3, cex.main = 1.5, ce
 
 ---
 
-### Systemic disease causing strains have fewer genes
+### Systemic strains have fewer genes (Violin plot)
 
 
 
@@ -154,7 +155,7 @@ vioplot(x1, x2, x3, cex.lab = 1.3, cex.main = 1.5, cex.axis = 1.3,
 
 ---
 
-### Genome length is correlated with number of genes
+### Genome length is correlated with number of genes (Scatter plot)
 
 
 ```r
@@ -169,20 +170,7 @@ abline(lm(strainInfo$CDS ~ strainInfo$GenomeSize), col = 'black', lwd = 2)
 
 ---
 
-### Genome length is correlated with number of genes
-
-
-```r
-correlation <- round(cor(strainInfo$GenomeSize, strainInfo$CDS),2)
-text(2e6, 2300, paste('cor = ',correlation,sep=''))
-```
-
-
-![plot of chunk unnamed-chunk-10](assets/fig/unnamed-chunk-10-1.png)
-
----
-
-### Bacterial population structure and phenotypes
+### Bacterial population structure and phenotypes (Stacked barplot)
 
 
 ```r
@@ -193,18 +181,18 @@ barplot(counts, main = "Distribution of strains", cex.lab = 1.5,
 abline(h = 0)
 ```
 
-![plot of chunk unnamed-chunk-11](assets/fig/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-9](assets/fig/unnamed-chunk-9-1.png)
 
 ---
 
 ### Multiple plots in a grid
 
-![plot of chunk unnamed-chunk-12](assets/fig/unnamed-chunk-12-1.png)
+![plot of chunk unnamed-chunk-10](assets/fig/unnamed-chunk-10-1.png)
 
 
 ---
 
-### Multiple plots in a grid
+### Multiple plots in a grid (R code)
 
 
 ```r
@@ -226,7 +214,7 @@ abline(lm(strainInfo$CDS ~ strainInfo$GenomeSize), col = 'black', lwd = 2)
 
 ---
 
-### Saving plots in files
+### Saving plots in files (R code)
 
 
 ```r
@@ -259,10 +247,10 @@ dev.off()
 
 ### Summary
 
-- R is free, open source platform for statistical and graphical analysis.
-- R scripts run on Windows, Linux and Mac OS X.
+- R is a free, open source platform for statistical and graphical analysis.
+- Scripts written in R can run on Windows, Linux and Mac OS X.
 - Graphs produced by R are reproducible.
-- Has a large user space.
+- R Has a large user space.
 
 ---
 
