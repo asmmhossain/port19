@@ -1,6 +1,6 @@
-# lvzmarch16
-Presentation slides for LVZ talk in March
+# Graphical analysis in base R
+Presentation slides for the revision lecture on the graphical analysis in R. 
 
 Presentation can be launched from web browser using the following link:
 
-[LVZ talk on March 14, 2016](http://asmmhossain.github.io/lvzmarch16) 
+[Revision lecture](http://asmmhossain.github.io/port19) 
