@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>A revision lecture on how to construct a graphical analysis in R</title>
+  <meta name="description" content="">
+  <meta name="author" content="Mukarram Hossain">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/theme/beige.css" id="theme">
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/zenburn.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/ribbons.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  <h2>Graphical analysis in R</h2>
+  <p><br></br>
+<strong>Mukarram Hossain</strong>
+<br></br>
+Department of Veterinary Medicine<br>
+University of Cambridge
+<br></br>
+7 October, 2019</p>
+
+  
+</section>
+<section class='' data-state='' id='slide-2'>
+  <h3>Introduction</h3>
+  <ul>
+<li>Graphs are a powerful way to present data and results in a concise manner.</li>
+<li>A graph is more readily understandable than words and numbers.</li>
+<li>Good graphs are useful in examining data to get idea about the patterns that may exist.</li>
+<li>Graphs can also aid in selecting correct statistical analysis.
+<br></br>
+<code>R has powerful and flexible graphical capabilities.</code></li>
+</ul>
+
+  
+</section>
+<section class='' data-state='' id='slide-3'>
+  <h3>Graphical analysis in R</h3>
+  <ul>
+<li>Graphical analysis in R is done by calling a series of graphics functions.</li>
+<li>These functions produce either a complete plot, or</li>
+<li>adds some output to an existing plot.</li>
+<li>R graphics follows a <strong>painter&#39;s model</strong></li>
+<li>Sophisticated packages are developed: <code>ggplot2</code>, <code>Lattice</code>, <code>Leaflet</code> </li>
+</ul>
+
+  
+</section>
+<section class='' data-state='' id='slide-4'>
+  <h2>Analysis of a bacterial dataset using R</h2>
+  
+  
+</section>
+<section class='' data-state='' id='slide-5'>
+  <h3>The dataset</h3>
+  <ul>
+<li>Our dataset for today contains information about bacterial whole genome sequences.</li>
+<li>For each bacterial strains we have the following features:
+
+<ul>
+<li>Country of isolation</li>
+<li>Population group</li>
+<li>Phenotype</li>
+<li>Genome length</li>
+<li>Percentage of GC content</li>
+<li>No. of coding sequences</li>
+</ul></li>
+</ul>
+
+  
+</section>
+<section class='' data-state='' id='slide-6'>
+  <h3>The dataframe</h3>
+  <pre><code class="r">strainInfo &lt;- read.csv(&#39;dataset.csv&#39;, header = T, quote = &quot;&quot;, na.strings = &quot;?&quot;)
+
+head(strainInfo,10)
+</code></pre>
+
+<pre><code>##      Strain Country GenomeSize    Phenotype Population  CDS     GC
+## 1   Strain1  Canada    2098424 Non-Clinical          1 1993 0.4106
+## 2   Strain2  Canada    2099479 Non-Clinical          1 1993 0.4106
+## 3   Strain3  Canada    2133605         &lt;NA&gt;          1 2070 0.4108
+## 4   Strain4      UK    2143407         &lt;NA&gt;          1 2053 0.4097
+## 5   Strain5      UK    2144506         &lt;NA&gt;          1 2049 0.4097
+## 6   Strain6  Canada    2145656    Sys-Brain          1 2065 0.4105
+## 7   Strain7  Canada    2149163    Sys-Brain          1 2082 0.4097
+## 8   Strain8  Canada    2151107    Sys-Brain          1 2085 0.4100
+## 9   Strain9      UK    2155971  Respiratory          1 2080 0.4095
+## 10 Strain10  Canada    2156465  Respiratory          1 2089 0.4103
+</code></pre>
+
+  
+</section>
+<section class='' data-state='' id='slide-7'>
+  <h3>Strains by Country of isolation</h3>
+  <pre><code class="r">pie.data &lt;- table(strainInfo$Country)
+lbls &lt;- paste(names(pie.data), &quot;\n&quot;, pie.data, sep=&quot;&quot;)
+pie(pie.data, labels = lbls, cex = 1.5, cex.main = 1.5,
+   main=&quot;Pie Chart of Country\n (with number of strains)&quot;)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-3-1.png" alt="plot of chunk unnamed-chunk-3"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-8'>
+  <h3>Distribution of GC content</h3>
+  <pre><code class="r">hist(strainInfo$GC, breaks = 5,
+     main = &#39;Distribution of GC content&#39;,
+     xlab = &#39;GC content (%)&#39;,
+     cex.lab = 1.5, cex.main = 1.5, cex.axis = 1.2)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-4-1.png" alt="plot of chunk unnamed-chunk-4"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-9'>
+  <h3>Disease causing strains have fewer genes??</h3>
+  <pre><code class="r">boxplot(strainInfo$CDS ~ strainInfo$Phenotype, cex.lab = 1.3, cex.main = 1.5, cex.axis = 1.3,
+        ylab=&#39;Number of genes&#39;, xlab=&#39;Phenotype&#39;,
+        main=&#39;Number of genes  by phenotypes&#39;, col=c(&quot;antiquewhite3&quot;,&quot;burlywood2&quot;,&quot;gold3&quot;))
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-5-1.png" alt="plot of chunk unnamed-chunk-5"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-10'>
+  <h3>Systemic disease causing strains have fewer genes</h3>
+  <pre><code class="r">vioplot(x1, x2, x3, cex.lab = 1.3, cex.main = 1.5, cex.axis = 1.3, 
+        names=c(&quot;Non-Clinical&quot;,&quot;Respiratory&quot;,&quot;Sys-Brain&quot;),
+        col=c(&quot;antiquewhite3&quot;,&quot;burlywood2&quot;,&quot;gold3&quot;),main=&#39;Number of genes by phenotypes&#39;)
+</code></pre>
+
+<pre><code>## [1] 1843 2470
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-7-1.png" alt="plot of chunk unnamed-chunk-7"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-11'>
+  <h3>Genome length is correlated with number of genes</h3>
+  <pre><code class="r">plot(strainInfo$GenomeSize,strainInfo$CDS, cex.lab = 1.5,
+     col = c(&quot;blue&quot;,&quot;burlywood2&quot;,&quot;red&quot;)[strainInfo$Phenotype],
+     xlab = &#39;Genome length&#39;, ylab = &#39;Number of genes&#39;)
+abline(lm(strainInfo$CDS ~ strainInfo$GenomeSize), col = &#39;black&#39;, lwd = 2)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-8-1.png" alt="plot of chunk unnamed-chunk-8"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-12'>
+  <h3>Genome length is correlated with number of genes</h3>
+  <pre><code class="r">correlation &lt;- round(cor(strainInfo$GenomeSize, strainInfo$CDS),2)
+text(2e6, 2300, paste(&#39;cor = &#39;,correlation,sep=&#39;&#39;))
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-10-1.png" alt="plot of chunk unnamed-chunk-10"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-13'>
+  <h3>Bacterial population structure and phenotypes</h3>
+  <pre><code class="r">counts &lt;- table(strainInfo$Phenotype,strainInfo$Population)
+barplot(counts, main = &quot;Distribution of strains&quot;, cex.lab = 1.5,
+        xlab = &quot;Bacterial population&quot;, cex.main = 1.5,
+        ylab = &#39;Number of strains&#39;, legend = rownames(counts))
+abline(h = 0)
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-11-1.png" alt="plot of chunk unnamed-chunk-11"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-14'>
+  <h3>Multiple plots in a grid</h3>
+  <p><img src="assets/fig/unnamed-chunk-12-1.png" alt="plot of chunk unnamed-chunk-12"></p>
+
+  
+</section>
+<section class='' data-state='' id='slide-15'>
+  <h3>Multiple plots in a grid</h3>
+  <pre><code class="r">par(mfrow=c(1,2))
+
+hist(strainInfo$GC, breaks = 5,
+     main = &#39;Distribution of GC content&#39;,
+     xlab = &#39;GC content (%)&#39;)
+
+box()
+
+plot(strainInfo$GenomeSize,strainInfo$CDS,
+     col = c(&quot;blue&quot;,&quot;burlywood2&quot;,&quot;red&quot;)[strainInfo$Phenotype],
+     xlab = &#39;Genome length&#39;, ylab = &#39;Number of genes&#39;,
+     main = &#39;Correlation&#39;)
+
+abline(lm(strainInfo$CDS ~ strainInfo$GenomeSize), col = &#39;black&#39;, lwd = 2)
+</code></pre>
+
+  
+</section>
+<section class='' data-state='' id='slide-16'>
+  <h3>Saving plots in files</h3>
+  <pre><code class="r">png(&#39;MyImage.png&#39;)
+
+par(mfrow=c(1,2))
+
+hist(strainInfo$GC, breaks = 5,
+     main = &#39;Distribution of GC content&#39;,
+     xlab = &#39;GC content (%)&#39;)
+
+box()
+
+plot(strainInfo$GenomeSize,strainInfo$CDS,
+     col = c(&quot;blue&quot;,&quot;burlywood2&quot;,&quot;red&quot;)[strainInfo$Phenotype],
+     xlab = &#39;Genome length&#39;, ylab = &#39;Number of genes&#39;,
+     main = &#39;Correlation&#39;)
+
+abline(lm(strainInfo$CDS ~ strainInfo$GenomeSize), col = &#39;black&#39;, lwd = 2)
+
+dev.off()
+</code></pre>
+
+<pre><code>## quartz_off_screen 
+##                 2
+</code></pre>
+
+  
+</section>
+<section class='' data-state='' id='slide-17'>
+  <h3>Summary</h3>
+  <ul>
+<li>R is free, open source platform for statistical and graphical analysis.</li>
+<li>R scripts run on Windows, Linux and Mac OS X.</li>
+<li>Graphs produced by R are reproducible.</li>
+<li>Has a large user space.</li>
+</ul>
+
+  
+</section>
+<section class='' data-state='' id='slide-18'>
+  <h3>Additional websites</h3>
+  <ul>
+<li>Cookbook for R  - <a href="http://www.cookbook-r.com">http://www.cookbook-r.com</a></li>
+<li>The Comprehensive R Archive network (CRAN) - <a href="https://cran.r-project.org">https://cran.r-project.org</a></li>
+<li>R Bloggers - <a href="http://r-bloggers.com">http://r-bloggers.com</a></li>
+<li>ggplot2 documentation - <a href="https://ggplot2.tidyverse.org/reference/">https://ggplot2.tidyverse.org/reference/</a></li>
+</ul>
+
+  
+</section>
+<section class='' data-state='' id='slide-19'>
+  <h2>Thank you !!</h2>
+  
+  
+</section>
+    </div>
+  </div>
+</body>
+  <script src="libraries/frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="libraries/frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: true,
+    theme: Reveal.getQueryHash().theme || 'beige', 
+    transition: Reveal.getQueryHash().transition || 'default', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: 'libraries/frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: 'libraries/frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: 'libraries/frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: 'libraries/frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
